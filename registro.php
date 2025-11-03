@@ -37,7 +37,7 @@
             </form>
             
             <div class="auth-links">
-                <p>Já tem conta? <a href="login.html">Faça login</a></p>
+                <p>Já tem conta? <a href="login.php">Faça login</a></p>
             </div>
             
             <div id="mensagem-sucesso" class="mensagem-sucesso" style="display: none;"></div>

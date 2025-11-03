@@ -27,7 +27,7 @@
             </form>
             
             <div class="auth-links">
-                <p>Não tem conta? <a href="registro.html">Cadastre-se</a></p>
+                <p>Não tem conta? <a href="registro.php">Cadastre-se</a></p>
             </div>
             
             <div id="mensagem-erro" class="mensagem-erro" style="display: none;"></div>

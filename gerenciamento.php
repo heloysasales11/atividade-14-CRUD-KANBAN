@@ -1,3 +1,14 @@
+<?php
+// Verificação de autenticação
+session_start();
+include 'config.php';
+
+if (!isset($_SESSION['usuario'])) {
+    header('Location: login.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -17,10 +28,14 @@
     <nav class="main-nav">
         <div class="container">
             <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="usuarios.html">Cadastrar Usuários</a></li>
-                <li><a href="tarefas.html">Cadastrar Tarefas</a></li>
-                <li><a href="gerenciamento.html" class="active">Gerenciar Tarefas</a></li>
+                <li><a href="index.php">Início</a></li>
+                <li><a href="tarefas.php">Cadastrar Tarefas</a></li>
+                <li><a href="gerenciamento.php" class="active">Gerenciar Tarefas</a></li>
+                <li><a href="usuarios.php">Usuários</a></li>
+                <li class="user-info">
+                    <span>Olá, <?php echo $_SESSION['usuario']['nome']; ?></span>
+                    <button onclick="authService.logout()" class="btn btn-secondary btn-small">Sair</button>
+                </li>
             </ul>
         </div>
     </nav>
@@ -32,9 +47,7 @@
                     <h2>A Fazer</h2>
                     <span class="task-count" id="count-a-fazer">0</span>
                 </div>
-                <div class="tasks-container" id="tasks-a-fazer">
-                
-                </div>
+                <div class="tasks-container" id="tasks-a-fazer"></div>
             </div>
             
             <div class="kanban-column" id="coluna-fazendo">
@@ -42,9 +55,7 @@
                     <h2>Fazendo</h2>
                     <span class="task-count" id="count-fazendo">0</span>
                 </div>
-                <div class="tasks-container" id="tasks-fazendo">
-                
-                </div>
+                <div class="tasks-container" id="tasks-fazendo"></div>
             </div>
             
             <div class="kanban-column" id="coluna-pronto">
@@ -52,27 +63,18 @@
                     <h2>Pronto</h2>
                     <span class="task-count" id="count-pronto">0</span>
                 </div>
-                <div class="tasks-container" id="tasks-pronto">
-                    
-                </div>
+                <div class="tasks-container" id="tasks-pronto"></div>
             </div>
         </section>
     </main>
 
-  
+    <!-- Modal de Edição -->
     <div id="modal-edicao" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Editar Tarefa</h2>
             <form id="form-edicao-tarefa">
                 <input type="hidden" id="edit-id" name="id">
-                
-                <div class="form-group">
-                    <label for="edit-usuario">Usuário Responsável:</label>
-                    <select id="edit-usuario" name="usuario" required>
-                       
-                    </select>
-                </div>
                 
                 <div class="form-group">
                     <label for="edit-descricao">Descrição da Tarefa:</label>
@@ -116,6 +118,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script src="kanban.js"></script>
 </body>
 </html>
