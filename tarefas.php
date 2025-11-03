@@ -1,90 +1,113 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Tarefas - Sistema Kanban</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <div class="container">
-            <h1>Cadastro de Tarefas</h1>
-            <p>Crie e atribua tarefas aos colaboradores</p>
-        </div>
-    </header>
+<?php
+// tarefas.php
+include 'config.php';
 
-    <nav class="main-nav">
-        <div class="container">
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="usuarios.html">Cadastrar Usuários</a></li>
-                <li><a href="tarefas.html" class="active">Cadastrar Tarefas</a></li>
-                <li><a href="gerenciamento.html">Gerenciar Tarefas</a></li>
-            </ul>
-        </div>
-    </nav>
+$method = $_SERVER['REQUEST_METHOD'];
+$database = new Database();
+$db = $database->getConnection();
 
-    <main class="container">
-        <section class="form-section">
-            <h2>Nova Tarefa</h2>
+// Função para verificar autenticação
+function verificarAutenticacao($db) {
+    $headers = getallheaders();
+    if(isset($headers['Authorization'])) {
+        $token = str_replace('Bearer ', '', $headers['Authorization']);
+        $query = "SELECT u.id, u.nome, u.email FROM sessoes s 
+                  JOIN usuarios u ON s.id_usuario = u.id 
+                  WHERE s.token_sessao = ? AND s.data_expiracao > NOW()";
+        $stmt = $db->prepare($query);
+        $stmt->execute([$token]);
+        
+        if($stmt->rowCount() == 1) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
+    return false;
+}
+
+switch($method) {
+    case 'GET':
+        // Listar tarefas do usuário logado
+        $usuario = verificarAutenticacao($db);
+        if($usuario) {
+            $query = "SELECT t.*, u.nome as usuario_nome 
+                      FROM tarefas t 
+                      JOIN usuarios u ON t.id_usuario = u.id 
+                      WHERE t.id_usuario = ? 
+                      ORDER BY t.data_cadastro DESC";
+            $stmt = $db->prepare($query);
+            $stmt->execute([$usuario['id']]);
+            $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode(["success" => true, "tarefas" => $tarefas]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Não autenticado"]);
+        }
+        break;
+        
+    case 'POST':
+        // Criar nova tarefa
+        $usuario = verificarAutenticacao($db);
+        if($usuario) {
+            $data = json_decode(file_get_contents("php://input"));
+            $query = "INSERT INTO tarefas (id_usuario, descricao, setor, prioridade, status) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $db->prepare($query);
             
-            <form id="form-tarefa">
-                <div class="form-group">
-                    <label for="usuario">Usuário Responsável:</label>
-                    <select id="usuario" name="usuario" required>
-                        <option value="">Selecione um usuário</option>
-                        
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="descricao">Descrição da Tarefa:</label>
-                    <textarea id="descricao" name="descricao" rows="4" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="setor">Setor:</label>
-                    <input type="text" id="setor" name="setor" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="prioridade">Prioridade:</label>
-                    <select id="prioridade" name="prioridade" required>
-                        <option value="">Selecione a prioridade</option>
-                        <option value="baixa">Baixa</option>
-                        <option value="media">Média</option>
-                        <option value="alta">Alta</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="status">Status:</label>
-                    <select id="status" name="status" required>
-                        <option value="a_fazer">A Fazer</option>
-                        <option value="fazendo">Fazendo</option>
-                        <option value="pronto">Pronto</option>
-                    </select>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Cadastrar Tarefa</button>
-                    <button type="reset" class="btn btn-secondary">Limpar</button>
-                </div>
-            </form>
+            if($stmt->execute([
+                $usuario['id'],
+                $data->descricao,
+                $data->setor,
+                $data->prioridade,
+                $data->status ?? 'a_fazer'
+            ])) {
+                echo json_encode(["success" => true, "message" => "Tarefa criada com sucesso"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Erro ao criar tarefa"]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Não autenticado"]);
+        }
+        break;
+        
+    case 'PUT':
+        // Atualizar tarefa
+        $usuario = verificarAutenticacao($db);
+        if($usuario) {
+            $data = json_decode(file_get_contents("php://input"));
+            $query = "UPDATE tarefas SET descricao = ?, setor = ?, prioridade = ?, status = ? WHERE id = ? AND id_usuario = ?";
+            $stmt = $db->prepare($query);
             
-            <div id="mensagem-sucesso" class="mensagem-sucesso" style="display: none;">
-                Tarefa cadastrada com sucesso!
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 Sistema Kanban - Indústria Alimentícia</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+            if($stmt->execute([
+                $data->descricao,
+                $data->setor,
+                $data->prioridade,
+                $data->status,
+                $data->id,
+                $usuario['id']
+            ])) {
+                echo json_encode(["success" => true, "message" => "Tarefa atualizada"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Erro ao atualizar tarefa"]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Não autenticado"]);
+        }
+        break;
+        
+    case 'DELETE':
+        // Excluir tarefa
+        $usuario = verificarAutenticacao($db);
+        if($usuario) {
+            $data = json_decode(file_get_contents("php://input"));
+            $query = "DELETE FROM tarefas WHERE id = ? AND id_usuario = ?";
+            $stmt = $db->prepare($query);
+            
+            if($stmt->execute([$data->id, $usuario['id']])) {
+                echo json_encode(["success" => true, "message" => "Tarefa excluída"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Erro ao excluir tarefa"]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Não autenticado"]);
+        }
+        break;
+}
+?>
