@@ -21,8 +21,10 @@ class Database {
         try {
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
             $this->conn->exec("set names utf8");
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $exception) {
-            echo "Connection error: " . $exception->getMessage();
+            echo json_encode(["success" => false, "message" => "Connection error: " . $exception->getMessage()]);
+            exit;
         }
         return $this->conn;
     }
@@ -30,5 +32,23 @@ class Database {
 
 function gerarToken() {
     return bin2hex(random_bytes(32));
+}
+
+// Função para verificar autenticação
+function verificarAutenticacao($db) {
+    $headers = getallheaders();
+    if(isset($headers['Authorization'])) {
+        $token = str_replace('Bearer ', '', $headers['Authorization']);
+        $query = "SELECT u.id, u.nome, u.email FROM sessoes s 
+                  JOIN usuarios u ON s.id_usuario = u.id 
+                  WHERE s.token_sessao = ? AND s.data_expiracao > NOW()";
+        $stmt = $db->prepare($query);
+        $stmt->execute([$token]);
+        
+        if($stmt->rowCount() == 1) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
+    return false;
 }
 ?>

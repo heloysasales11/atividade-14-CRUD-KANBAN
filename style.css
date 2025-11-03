@@ -1,3 +1,6 @@
+/* style.css - Sistema Kanban Completo */
+
+/* Reset e Base */
 * {
     margin: 0;
     padding: 0;
@@ -8,229 +11,275 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #f5f5f5;
+    background-color: #f8f9fa;
 }
 
 .container {
-    width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 0 20px;
 }
 
+/* Header */
 header {
-    background-color: #2c3e50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 1rem 0;
+    padding: 2rem 0;
     text-align: center;
 }
 
 header h1 {
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
 }
 
 header p {
-    opacity: 0.8;
+    font-size: 1.1rem;
+    opacity: 0.9;
 }
 
+/* Navigation */
 .main-nav {
-    background-color: #34495e;
+    background: #2c3e50;
+    padding: 1rem 0;
 }
 
 .main-nav ul {
-    display: flex;
     list-style: none;
-    justify-content: center;
-}
-
-.main-nav li {
-    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
 
 .main-nav a {
-    display: block;
-    color: white;
+    color: #ecf0f1;
     text-decoration: none;
-    padding: 1rem 1.5rem;
-    transition: background-color 0.3s;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
 }
 
-.main-nav a:hover,
+.main-nav a:hover {
+    background: #34495e;
+    color: #3498db;
+}
+
 .main-nav a.active {
-    background-color: #1abc9c;
+    background: #3498db;
+    color: white;
 }
 
+/* User Info in Nav */
+.user-info {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+    color: #ecf0f1;
+}
+
+.user-info span {
+    font-weight: 500;
+}
+
+/* Main Content */
 main {
     padding: 2rem 0;
     min-height: calc(100vh - 200px);
 }
 
+/* Welcome Section */
 .welcome {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .welcome h2 {
+    font-size: 2rem;
     margin-bottom: 1rem;
     color: #2c3e50;
 }
 
+.welcome p {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+/* Features Grid */
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    margin-top: 2rem;
+    margin: 3rem 0;
 }
 
 .feature-card {
     background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
 }
 
 .feature-card h3 {
-    margin-bottom: 1rem;
     color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
 }
 
+.feature-card p {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+}
+
+/* Forms */
 .form-section {
     background: white;
-    border-radius: 8px;
     padding: 2rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .form-section h2 {
-    margin-bottom: 1.5rem;
     color: #2c3e50;
-    border-bottom: 2px solid #1abc9c;
-    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .form-group {
     margin-bottom: 1.5rem;
 }
 
-label {
+.form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-}
-
-input, select, textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: #1abc9c;
-    box-shadow: 0 0 0 2px rgba(26, 188, 156, 0.2);
-}
-
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-start;
-}
-
-.btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: #3498db;
-    color: white;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-}
-
-.btn:hover {
-    background-color: #2980b9;
-}
-
-.btn-primary {
-    background-color: #1abc9c;
-}
-
-.btn-primary:hover {
-    background-color: #16a085;
-}
-
-.btn-secondary {
-    background-color: #95a5a6;
-}
-
-.btn-secondary:hover {
-    background-color: #7f8c8d;
-}
-
-.btn-danger {
-    background-color: #e74c3c;
-}
-
-.btn-danger:hover {
-    background-color: #c0392b;
-}
-
-.mensagem-sucesso {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 1rem;
-    border-radius: 4px;
-    margin-top: 1rem;
-    border: 1px solid #c3e6cb;
-}
-
-.error-message {
-    color: #e74c3c;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-    display: block;
-}
-
-.lista-usuarios {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-}
-
-.usuario-card {
-    background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.usuario-card h3 {
-    margin-bottom: 0.5rem;
     color: #2c3e50;
 }
 
-.usuario-card p {
-    color: #7f8c8d;
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
     font-size: 0.9rem;
+}
+
+.btn-block {
+    width: 100%;
+    display: block;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #3498db;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* Kanban Board */
+.kanban-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.kanban-header h2 {
+    color: #2c3e50;
 }
 
 .kanban-board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    height: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
 .kanban-column {
-    background-color: #ecf0f1;
-    border-radius: 8px;
-    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
     min-height: 600px;
 }
 
@@ -239,37 +288,35 @@ input:focus, select:focus, textarea:focus {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #bdc3c7;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
 }
 
 .column-header h2 {
     color: #2c3e50;
-    margin: 0;
+    font-size: 1.3rem;
 }
 
 .task-count {
-    background-color: #3498db;
+    background: #3498db;
     color: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .tasks-container {
     min-height: 500px;
 }
 
+/* Task Cards */
 .task-card {
     background: white;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 1rem;
     margin-bottom: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     border-left: 4px solid #3498db;
 }
 
@@ -282,64 +329,90 @@ input:focus, select:focus, textarea:focus {
 }
 
 .task-card.baixa {
-    border-left-color: #2ecc71;
+    border-left-color: #27ae60;
 }
 
 .task-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .task-descricao {
-    margin-bottom: 0.5rem;
     font-weight: 500;
+    color: #2c3e50;
 }
 
 .task-info {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 0.8rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
 }
 
-.task-setor, .task-usuario, .task-prioridade {
-    background-color: #ecf0f1;
+.task-setor {
+    background: #ecf0f1;
     padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    border-radius: 3px;
+    color: #7f8c8d;
+}
+
+.task-prioridade {
+    font-weight: 600;
+}
+
+.task-meta {
+    margin-bottom: 0.75rem;
+}
+
+.task-meta small {
+    color: #95a5a6;
 }
 
 .task-actions {
     display: flex;
     gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
-.btn-small {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+.task-actions select {
+    flex: 1;
+    min-width: 120px;
 }
 
+/* Empty States */
+.empty-state {
+    text-align: center;
+    color: #95a5a6;
+    padding: 2rem;
+    font-style: italic;
+}
+
+.loading {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 2rem;
+}
+
+/* Modal */
 .modal {
+    display: none;
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
+    background-color: rgba(0,0,0,0.5);
     align-items: center;
-    z-index: 1000;
+    justify-content: center;
 }
 
 .modal-content {
     background: white;
-    border-radius: 8px;
     padding: 2rem;
+    border-radius: 10px;
     width: 90%;
-    max-width: 600px;
+    max-width: 500px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
@@ -347,44 +420,18 @@ input:focus, select:focus, textarea:focus {
 
 .close {
     position: absolute;
+    right: 1rem;
     top: 1rem;
-    right: 1.5rem;
     font-size: 1.5rem;
     cursor: pointer;
     color: #7f8c8d;
 }
 
 .close:hover {
-    color: #34495e;
+    color: #e74c3c;
 }
 
-footer {
-    background-color: #34495e;
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 2rem;
-}
-
-@media (max-width: 768px) {
-    .main-nav ul {
-        flex-direction: column;
-    }
-    
-    .kanban-board {
-        grid-template-columns: 1fr;
-    }
-    
-    .form-actions {
-        flex-direction: column;
-    }
-    
-    .features {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Estilos para Autenticação */
+/* Authentication */
 .auth-container {
     display: flex;
     justify-content: center;
@@ -396,35 +443,36 @@ footer {
 
 .auth-card {
     background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     width: 100%;
     max-width: 400px;
 }
 
+.auth-card h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
 .auth-subtitle {
     text-align: center;
-    color: #666;
-    margin-bottom: 30px;
+    color: #7f8c8d;
+    margin-bottom: 2rem;
 }
 
 .auth-form {
-    margin-bottom: 20px;
-}
-
-.btn-block {
-    width: 100%;
-    display: block;
+    margin-bottom: 1.5rem;
 }
 
 .auth-links {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 1.5rem;
 }
 
 .auth-links a {
-    color: #667eea;
+    color: #3498db;
     text-decoration: none;
 }
 
@@ -432,57 +480,162 @@ footer {
     text-decoration: underline;
 }
 
-/* Navbar com usuário */
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-left: auto;
-}
-
-/* Integração com API */
+/* API Integration */
 .api-integration {
     background: #f8f9fa;
     border: 1px solid #e9ecef;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.api-result {
-    background: #e7f3ff;
-    border: 1px solid #b3d9ff;
-    border-radius: 5px;
-    padding: 10px;
-    margin-top: 10px;
-    display: none;
+.api-integration h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
 }
 
 .cep-search {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .cep-search input {
     flex: 1;
 }
 
-/* Mensagens */
-.mensagem-erro {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 10px;
+.api-result {
+    background: #e7f3ff;
+    border: 1px solid #b3d9ff;
     border-radius: 5px;
-    margin-top: 15px;
-    border: 1px solid #f5c6cb;
+    padding: 1rem;
+    margin-top: 1rem;
+    display: none;
 }
 
+.api-result h4 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+/* Messages */
 .mensagem-sucesso {
     background: #d4edda;
     color: #155724;
-    padding: 10px;
+    padding: 1rem;
     border-radius: 5px;
-    margin-top: 15px;
+    margin-top: 1rem;
     border: 1px solid #c3e6cb;
+}
+
+.mensagem-erro {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    border: 1px solid #f5c6cb;
+}
+
+/* User List */
+.list-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.list-section h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.lista-usuarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.usuario-card {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.usuario-card h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.usuario-card p {
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+}
+
+.usuario-card small {
+    color: #95a5a6;
+}
+
+/* Footer */
+footer {
+    background: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .user-info {
+        margin-left: 0;
+        justify-content: center;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+    }
+    
+    .kanban-board {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .task-actions {
+        flex-direction: column;
+    }
+    
+    .task-actions select {
+        min-width: auto;
+    }
+    
+    .cep-search {
+        flex-direction: column;
+    }
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+
+.hidden {
+    display: none !important;
 }

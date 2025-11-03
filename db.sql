@@ -1,3 +1,4 @@
+-- db.sql
 DROP DATABASE IF EXISTS kanban_industria;
 CREATE DATABASE kanban_industria;
 USE kanban_industria;
@@ -33,4 +34,10 @@ CREATE TABLE sessoes (
 -- Inserir usuário de exemplo (senha: 123456)
 INSERT INTO usuarios (nome, email, senha_hash) VALUES 
 ('João Silva', 'joao@empresa.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'),
-('Maria Santos', 'maria@empresa.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');s
+('Maria Santos', 'maria@empresa.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+
+-- Inserir algumas tarefas de exemplo
+INSERT INTO tarefas (id_usuario, descricao, setor, prioridade, status) VALUES 
+(1, 'Revisar relatório de produção', 'Produção', 'alta', 'a_fazer'),
+(2, 'Atualizar cardápio do refeitório', 'RH', 'media', 'fazendo'),
+(1, 'Calibrar equipamentos de medição', 'Manutenção', 'alta', 'pronto');

@@ -12,7 +12,13 @@ switch($method) {
             if(strlen($cep) === 8) {
                 // Consultar ViaCEP
                 $url = "https://viacep.com.br/ws/{$cep}/json/";
-                $response = file_get_contents($url);
+                $context = stream_context_create([
+                    'http' => [
+                        'timeout' => 5 // Timeout de 5 segundos
+                    ]
+                ]);
+                
+                $response = file_get_contents($url, false, $context);
                 $dados = json_decode($response);
                 
                 if(!isset($dados->erro)) {
@@ -31,7 +37,12 @@ switch($method) {
             } else {
                 echo json_encode(["success" => false, "message" => "CEP inválido"]);
             }
+        } else {
+            echo json_encode(["success" => false, "message" => "CEP não informado"]);
         }
         break;
+        
+    default:
+        echo json_encode(["success" => false, "message" => "Método não permitido"]);
 }
 ?>

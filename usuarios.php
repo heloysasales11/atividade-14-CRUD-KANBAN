@@ -1,14 +1,11 @@
 <?php
-// Verificação de autenticação
+// usuarios.php
 session_start();
-include 'config.php';
-
-if (!isset($_SESSION['usuario'])) {
+if(!isset($_SESSION['usuario'])) {
     header('Location: login.php');
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -32,9 +29,8 @@ if (!isset($_SESSION['usuario'])) {
                 <li><a href="tarefas.php">Cadastrar Tarefas</a></li>
                 <li><a href="gerenciamento.php">Gerenciar Tarefas</a></li>
                 <li><a href="usuarios.php" class="active">Usuários</a></li>
-                <li class="user-info">
-                    <span>Olá, <?php echo $_SESSION['usuario']['nome']; ?></span>
-                    <button onclick="authService.logout()" class="btn btn-secondary btn-small">Sair</button>
+                <li class="user-info" style="display: none;">
+                    <!-- Será preenchido pelo JavaScript -->
                 </li>
             </ul>
         </div>
@@ -42,16 +38,16 @@ if (!isset($_SESSION['usuario'])) {
 
     <main class="container">
         <section class="list-section">
-            <h2>Usuários do Sistema</h2>
+            <h2>👥 Usuários do Sistema</h2>
             <div id="lista-usuarios" class="lista-usuarios">
-                <!-- Lista de usuários será carregada via JavaScript -->
+                <div class="loading">Carregando usuários...</div>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2023 Sistema Kanban - Indústria Alimentícia</p>
+            <p>&copy; 2024 Sistema Kanban - Indústria Alimentícia</p>
         </div>
     </footer>
 
@@ -69,20 +65,30 @@ if (!isset($_SESSION['usuario'])) {
             
             if (data.success) {
                 const container = document.getElementById('lista-usuarios');
-                container.innerHTML = data.usuarios.map(usuario => `
-                    <div class="usuario-card">
-                        <h3>${usuario.nome}</h3>
-                        <p>${usuario.email}</p>
-                        <small>Cadastrado em: ${new Date(usuario.data_cadastro).toLocaleDateString('pt-BR')}</small>
-                    </div>
-                `).join('');
+                if (data.usuarios.length > 0) {
+                    container.innerHTML = data.usuarios.map(usuario => `
+                        <div class="usuario-card">
+                            <h3>${usuario.nome}</h3>
+                            <p>📧 ${usuario.email}</p>
+                            <small>📅 Cadastrado em: ${new Date(usuario.data_cadastro).toLocaleDateString('pt-BR')}</small>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p>Nenhum usuário cadastrado no sistema.</p>';
+                }
+            } else {
+                document.getElementById('lista-usuarios').innerHTML = '<p class="error">Erro ao carregar usuários.</p>';
             }
         } catch (error) {
             console.error('Erro ao carregar usuários:', error);
+            document.getElementById('lista-usuarios').innerHTML = '<p class="error">Erro de conexão.</p>';
         }
     }
 
-    document.addEventListener('DOMContentLoaded', carregarUsuarios);
+    document.addEventListener('DOMContentLoaded', function() {
+        atualizarInterfaceUsuario();
+        carregarUsuarios();
+    });
     </script>
 </body>
 </html>

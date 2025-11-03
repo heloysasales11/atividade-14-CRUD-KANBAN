@@ -80,12 +80,33 @@ switch($method) {
                     if(!empty($data->token)) {
                         $query = "DELETE FROM sessoes WHERE token_sessao = ?";
                         $stmt = $db->prepare($query);
-                        $stmt->execute([$data->token]);
-                        echo json_encode(["success" => true, "message" => "Logout realizado"]);
+                        if($stmt->execute([$data->token])) {
+                            echo json_encode(["success" => true, "message" => "Logout realizado"]);
+                        } else {
+                            echo json_encode(["success" => false, "message" => "Erro no logout"]);
+                        }
                     }
                     break;
+                    
+                case 'check':
+                    // Verificar se token é válido
+                    if(!empty($data->token)) {
+                        $usuario = verificarAutenticacao($db);
+                        if($usuario) {
+                            echo json_encode(["success" => true, "usuario" => $usuario]);
+                        } else {
+                            echo json_encode(["success" => false, "message" => "Token inválido"]);
+                        }
+                    }
+                    break;
+                    
+                default:
+                    echo json_encode(["success" => false, "message" => "Ação não reconhecida"]);
             }
         }
         break;
+        
+    default:
+        echo json_encode(["success" => false, "message" => "Método não permitido"]);
 }
 ?>
